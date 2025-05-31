@@ -29,7 +29,7 @@ function App() {
     setCurrentPage(1)
   }
   
-  const { data, isError, isLoading } = useQuery({
+  const { data, isError, isPending, isSuccess} = useQuery({
     queryKey: ["movies", topic, currentPage], 
     queryFn: async() => await getMovies(topic, currentPage),
     enabled: topic !== "",
@@ -47,7 +47,7 @@ function App() {
   return <>
     <Toaster/>
     <SearchBar onSubmit={handleSearch} />
-    {data && data?.total_pages > 1 && <ReactPaginate
+    {isSuccess && data?.total_pages > 1 && <ReactPaginate
       pageCount={totalPages}
       pageRangeDisplayed={5}
       marginPagesDisplayed={1}
@@ -58,9 +58,9 @@ function App() {
       nextLabel="→"
       previousLabel="←"
     />}
-    {isLoading && <Loader />}
+    {isPending && <Loader />}
     {isError && <ErrorMessage />}
-    {data && <MovieGrid onSelect={openModal} movies={data.results} />}
+    {isSuccess && <MovieGrid onSelect={openModal} movies={data.results} />}
     {selectedMovie && <MovieModal movie={selectedMovie} onClose={closeModal} />}
  </>
 }
