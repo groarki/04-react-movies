@@ -58,7 +58,7 @@ function App() {
       nextLabel="→"
       previousLabel="←"
     />}
-    {isPending && <Loader />}
+    {topic !== "" && isPending && <Loader />}
     {isError && <ErrorMessage />}
     {isSuccess && <MovieGrid onSelect={openModal} movies={data.results} />}
     {selectedMovie && <MovieModal movie={selectedMovie} onClose={closeModal} />}
